@@ -7,6 +7,10 @@ $(document).ready(function() {
 	resetPage();
 });
 
+var goodToken = 'd2a5ec1e-7c8b-40c0-a1b1-7698ad4fa765';
+var badToken = 'skjgshg-ishkjbsgjhs'; 
+var token = badToken;
+
 function resetPage() {
 	clearTextBoxes();
 	$('#divAllUsers').html("Local .js says - All the users will show up here.");
@@ -22,6 +26,7 @@ function loadAllUsers() {
 	$('#divLoading').show()
 	$.ajax({
 		url: url + 'api/user',
+		data: {"token": token},
 		type: 'GET',
 		cache: false,
 		dataType: 'json',

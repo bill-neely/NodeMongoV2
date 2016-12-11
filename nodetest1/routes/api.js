@@ -8,7 +8,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/user', function(req, res, next) {
-	sendUsers(req, res, {});
+	//var token = req.query.token;
+	//if (validateToken(token, req, res)) {
+	//	return;
+	//};
+	getUsers(req, res, {});
+});
+
+router.get('/user/:id', function(req, res, next) {
+	var id = req.params['id'];
+	var parms = {'_id': new ObjectID(id)};
+	getUsers(req, res, parms);
 });
 
 router.post('/user', function(req, res, next) {
@@ -16,17 +26,10 @@ router.post('/user', function(req, res, next) {
 });
 
 router.delete('/user', function(req, res, next) {
-	console.log("In /user delete")
 	deleteUser(req, res);
 });
 
-router.get('/user/:id', function(req, res, next) {
-	var id = req.params['id'];
-	var parms = {'_id': new ObjectID(id)};
-	sendUsers(req, res, parms);
-});
-
-function sendUsers(req, res, parms) {
+function getUsers(req, res, parms) {
 	var db = req.db;
 	var collection = db.get('usercollection');
 	collection.find(parms, function(err, results) {
@@ -93,6 +96,23 @@ function validEntry(userName, userEmail, err) {
 		return("Name must be at least 3 characters");
 	}
 	return;
+}
+
+function validateToken(token, req, res) {
+	console.log('Token = ' + token);
+	var db = req.db;
+	var collection = db.get('tokens');
+	collection.find({"token": token}, function(err, results) {
+		if (results.length >= 1) {
+			console.log(results);
+			console.log("token is valid");
+			return;
+		}
+		else { 
+			res.status(401).send("Token is invalid");
+			return "Token is invalid";
+		}
+	});
 }
 
 module.exports = router;

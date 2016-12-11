@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add, Update, Delete Users</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="stylesheets/style.css">
+	<script src="javascripts/users.js"></script>
+	<script id="hsUserTable" type="text/x-handlebars-template">
+		<div class="container">
+		<table id="tblUsers" class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>Email</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each user}}
+				<tr>
+					<td>{{ username }}</td>
+					<td>{{ email }}</td>
+					<td>
+						<img src=images/delete.jpg class="edits" onclick="deleteUser('{{ _id }}')">
+						<img src=images/edit.png class="edits">
+					</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		</div>
+	</script>
+</head>
+<body>
+	<h1>The users maintenance page</h1>
+	<div id="divAddUsers" class="container">
+			<label for="txtName">Name:</label> 
+			<input type="text" id="txtName" placeholder="Name">
+			<label for="txtEmail">Email:</label> 
+			<input type="text" id="txtEmail" placeholder="Email">
+			<button id="btnAddUser" class="btn btn-primary">Add User</button>
+	</div>
+	<hr>
+	<div id="divAllUsers">
+		This is default text for divAllUsers
+	</div>
+	<div id="divLoading" class="divLoading">
+		<p class="divLoading">
+			Loading, please wait...
+			<img src="images/loading.gif" id="imgLoading">
+		</p>
+	</div>
+</body>
+</html>

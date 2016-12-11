@@ -14,7 +14,6 @@ router.get('/helloworld', function(req, res) {
 /* GET userlist page */
 router.get('/userlist', (req, res) => {
 	var db = req.db;
-	console.log(db);
 	var collection = db.get('usercollection');
 	collection.find({},{}, function(e,docs) {
 		res.render('userlist', {

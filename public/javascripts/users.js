@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 	//Setup AJAX?
-	url = 'http://' + window.location.host //'http://localhost:3000/'
+	url = window.location.origin //'http://localhost:3000/'
 	$('#btnAddUser').click(activateAddUser);
 	$('#btnModalComplete').click(postUser);
 	resetPage();

@@ -4,33 +4,36 @@ const ObjectID = require('mongodb').ObjectID
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('this is the API');
+	res.send('this is the API');
 });
 
 router.get('/user', function(req, res, next) {
-	//var token = req.query.token;
-	//if (validateToken(token, req, res)) {
-	//	return;
-	//};
-	getUsers(req, res, {});
+	req.customParms = {};
+	console.log("/user GET");
+	validateToken(req, res, getUsers);
 });
 
 router.get('/user/:id', function(req, res, next) {
 	var id = req.params['id'];
 	var parms = {'_id': new ObjectID(id)};
-	getUsers(req, res, parms);
+	req.customParms = parms
+	validateToken(req, res, getUsers);
 });
 
 router.post('/user', function(req, res, next) {
-	addNewUser(req, res);
+	validateToken(req, res, postUser);
+	//addNewUser(req, res);
 });
 
 router.delete('/user', function(req, res, next) {
-	deleteUser(req, res);
+	validateToken(req, res, deleteUser);
+	//deleteUser(req, res);
 });
 
-function getUsers(req, res, parms) {
+function getUsers(req, res) {
+	console.log("in getUsers");
 	var db = req.db;
+	var parms = req.customParms
 	var collection = db.get('usercollection');
 	collection.find(parms, function(err, results) {
 		console.log("returning from sendusers")
@@ -38,7 +41,7 @@ function getUsers(req, res, parms) {
 	});
 }
 
-function addNewUser(req, res) {
+function postUser(req, res) {
 	// Set our internal db variable
 	var db = req.db;
 
@@ -55,19 +58,44 @@ function addNewUser(req, res) {
 	// Set our collection
 	var collection = db.get('usercollection');
 
-	// Submit to the DB
-	collection.insert({
-		"username": userName,
-		"email": userEmail
-	}, (err, doc) => {
-		if (err) {
+	var userID = req.body._id
+	console.log('postUser.  id = ' + userID);
+	if (userID == "") {
+		console.log('adding user');
+		// Submit to the DB
+		collection.insert( {
+			"username": userName,
+			"email": userEmail
+		}, (err, doc) => {
+			if (err) {
 			// if it failed, return error
 			res.status(500).send(err);
-		}
-		else {
-			res.status(201).json(req.body);
-		}
-	});
+			}
+			else {
+				res.status(201).json(req.body);
+			}
+		});
+
+	}
+	else {
+		console.log('editing user');	
+		collection.update( {
+			"_id": ObjectID(userID)
+		},
+		{
+			"username": userName,
+			"email": userEmail
+		}, (err, doc) => {
+			if (err) {
+			// if it failed, return error
+			res.status(500).send(err);
+			}
+			else {
+				res.status(200).json(req.body);
+			}
+		});
+	};
+
 };
 
 function deleteUser(req, res) {
@@ -98,19 +126,21 @@ function validEntry(userName, userEmail, err) {
 	return;
 }
 
-function validateToken(token, req, res) {
+function validateToken(req, res, next) {
+	console.log("in ValidateToken");
+	var authHeader = req.get('Authorization');
+	token = new Buffer(authHeader, 'base64').toString();
 	console.log('Token = ' + token);
 	var db = req.db;
 	var collection = db.get('tokens');
 	collection.find({"token": token}, function(err, results) {
 		if (results.length >= 1) {
-			console.log(results);
 			console.log("token is valid");
-			return;
+			next(req, res);
 		}
 		else { 
-			res.status(401).send("Token is invalid");
-			return "Token is invalid";
+			console.log("token is invalid");
+			res.status(401).send("Token is invalid").end();
 		}
 	});
 }

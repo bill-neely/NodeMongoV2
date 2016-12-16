@@ -25,7 +25,7 @@
 					<td>{{ email }}</td>
 					<td>
 						<img src=images/delete.jpg class="edits" onclick="deleteUser('{{ _id }}')">
-						<img src=images/edit.png class="edits">
+						<img src=images/edit.png class="edits" onclick="activateEditUser('{{ _id }}')" data-toggle="modal" data-target="#divModalUser">
 					</td>
 				</tr>
 			{{/each}}
@@ -36,22 +36,39 @@
 </head>
 <body>
 	<h1>The users maintenance page</h1>
-	<div id="divAddUsers" class="container">
-			<label for="txtName">Name:</label> 
-			<input type="text" id="txtName" placeholder="Name">
-			<label for="txtEmail">Email:</label> 
-			<input type="text" id="txtEmail" placeholder="Email">
-			<button id="btnAddUser" class="btn btn-primary">Add User</button>
-	</div>
 	<hr>
+	<button id="btnAddUser" class="btn btn-primary" data-toggle="modal" data-target="#divModalUser">Add User</button>
+
 	<div id="divAllUsers">
 		This is default text for divAllUsers
 	</div>
+
 	<div id="divLoading" class="divLoading">
 		<p class="divLoading">
 			Loading, please wait...
 			<img src="images/loading.gif" id="imgLoading">
 		</p>
+	</div>
+
+	<div id="divModalUser" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					Complete the form.
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<label for="txtName">Name:</label> 
+					<input type="text" id="txtName" placeholder="Name">
+					<label for="txtEmail">Email:</label> 
+					<input type="text" id="txtEmail" placeholder="Email">
+					<input type="hidden" id="hdnUserID">
+				</div>
+				<div class="modal-footer">
+					<button id="btnModalComplete" class="btn btn-primary" data-dismiss="modal">btnModalComplete</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

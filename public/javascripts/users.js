@@ -80,7 +80,7 @@ function postUser() {
 	email = $('#txtEmail').val();
 	userID = $('#hdnUserID').val();
 	$.ajax({
-		url: url + 'api/user',
+		url: url + '/api/user',
 		type: 'POST',
 		data: {
 			'_id': userID,
@@ -110,7 +110,7 @@ function postUser() {
 function deleteUser(userID) {
 	console.log(userID);
 	$.ajax({
-		url: url + 'api/user',
+		url: url + '/api/user',
 		type: 'DELETE',
 		data: {'_id': userID},
 		dataType: 'json',

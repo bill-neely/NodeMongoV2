@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 	//Setup AJAX?
-	url = 'http://localhost:3000/'
+	url = 'http://' + window.location.host //'http://localhost:3000/'
 	$('#btnAddUser').click(activateAddUser);
 	$('#btnModalComplete').click(postUser);
 	resetPage();
@@ -32,7 +32,7 @@ function clearTextBoxes() {
 function loadAllUsers() {
 	$('#divLoading').show()
 	$.ajax({
-		url: url + 'api/user',
+		url: url + '/api/user',
 		type: 'GET',
 		cache: false,
 		dataType: 'json',

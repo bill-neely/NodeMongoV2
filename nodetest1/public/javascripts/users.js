@@ -1,11 +1,9 @@
-// client side users.js
 
 $(document).ready(function() {
 	//Setup AJAX?
 	url = 'http://localhost:3000/'
 	$('#btnAddUser').click(activateAddUser);
 	$('#btnModalComplete').click(postUser);
-	//$('#btnEditComplete').click(editUser);
 	resetPage();
 });
 
@@ -28,14 +26,7 @@ function clearTextBoxes() {
 	$('btnModalComplete').text('Modal button label');
 	$('#txtName').val('');
 	$('#txtEmail').val('');
-	$('#txtNameEdit').val('');
-	$('#txtEmailEdit').val('');
-	$('#hdnUserIDEdit').val('');
-}
-
-function activateAddUser() {
-	clearTextBoxes();
-	$('#btnModalComplete').text('Add User');
+	$('#hdnUserID').val('');
 }
 
 function loadAllUsers() {
@@ -66,6 +57,22 @@ function loadAllUsers() {
 		$('<div class="alert alert-danger"><strong>FAILED!</strong> ' + result["responseText"] + '</div>')
 			.insertBefore('#divAllUsers').hide().fadeIn("slow").delay(3000).fadeOut("slow");
 	}
+}
+
+function activateAddUser() {
+	clearTextBoxes();
+	$('#btnModalComplete').text('Add User');
+}
+
+function activateEditUser(userID) {
+	clearTextBoxes();
+	$('#btnModalComplete').text('Edit User');
+	var clickedUser = allUserData.filter( function(user) {
+		return user["_id"] === userID
+	})[0];
+	$('#txtName').val(clickedUser.username);
+	$('#txtEmail').val(clickedUser.email);
+	$('#hdnUserID').val(userID);;
 }
 
 function postUser() {
@@ -124,16 +131,4 @@ function deleteUser(userID) {
 		alert('API delete failed.  Status is ' + status + '. Response is ' + result);
 	}
 
-}
-
-function activateEditUser(userID) {
-	$('#btnModalComplete').text('Edit User');
-	console.log(userID);
-	var clickedUser = allUserData.filter( function(user) {
-		return user["_id"] === userID
-	})[0];
-	console.log(clickedUser);
-	$('#txtName').val(clickedUser.username);
-	$('#txtEmail').val(clickedUser.email);
-	$('#hdnUserID').val(userID);;
 }

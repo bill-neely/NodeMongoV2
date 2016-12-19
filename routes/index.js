@@ -1,14 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-/* GET Hello World Page */
-router.get('/helloworld', function(req, res) {
-	res.render('helloworld', {title: 'Hello, World!'});
+	res.sendFile(path.join(__dirname, 'html', 'login.html'));
+  //res.render('index', { title: 'Express' });
 });
 
 /* GET userlist page */

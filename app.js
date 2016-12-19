@@ -11,9 +11,12 @@ var monk = require('monk');
 var mongoURL = 'mongodb://bill:652IcDFOy@ds129038.mlab.com:29038/billnodetest1'
 var db = monk(mongoURL)
 
-var index = require('./routes/index');
+var login = require('./routes/login');
 var users = require('./routes/users');
 var api = require('./routes/api');
+// Get rid of this
+var index = require('./routes/index');
+
 
 var app = express();
 
@@ -35,9 +38,12 @@ app.use(function(req, res, next) {
 	next()
 });
 
-app.use('/', index);
+app.use('/', login);
 app.use('/users', users);
 app.use('/api', api);
+// Need to get rid of this
+app.use('/index', index);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

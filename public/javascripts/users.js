@@ -8,15 +8,19 @@ $(document).ready(function() {
 });
 
 var allUserData = [];
+var authToken = '';
 
 function generateToken() {
 	var goodToken = 'd2a5ec1e-7c8b-40c0-a1b1-7698ad4fa765';
 	var badToken = 'skjgshg-ishkjbsgjhs'; 
-	var token = goodToken;
-	return btoa(token);
+	//var token = goodToken;
+	//var token = $('#txtUseToken').val();
+	return btoa(authToken);
 }
 
 function resetPage() {
+	loadToken();
+	$('#lblToken').text('Token = ' + authToken);
 	clearTextBoxes();
 	$('#divAllUsers').html("Local .js says - All the users will show up here.");
 	loadAllUsers();
@@ -28,6 +32,10 @@ function clearTextBoxes() {
 	$('#txtEmail').val('');
 	$('#hdnUserID').val('');
 }
+
+function loadToken() {
+	authToken = getCookie('authToken');
+};
 
 function loadAllUsers() {
 	$('#divLoading').show()
@@ -130,5 +138,19 @@ function deleteUser(userID) {
 	function userDeleteFailed(result, status) {
 		alert('API delete failed.  Status is ' + status + '. Response is ' + result);
 	}
+}
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

@@ -144,7 +144,9 @@ function deleteUser(userID) {
 	}
 
 	function userDeleteFailed(result, status) {
-		alert('API delete failed.  Status is ' + status + '. Response is ' + result);
+		$('<div class="alert alert-danger"><strong>FAILED!</strong> ' + result["responseText"] + '</div>')
+			.insertBefore('#divAllUsers').hide().fadeIn("slow").delay(3000).fadeOut("slow");
+
 	}
 }
 

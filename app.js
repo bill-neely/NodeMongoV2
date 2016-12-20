@@ -44,6 +44,11 @@ app.use('/api', api);
 // Need to get rid of this
 app.use('/index', index);
 
+app.use(redirectUnmatched);
+
+function redirectUnmatched(req, res) {
+  res.redirect("/");
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

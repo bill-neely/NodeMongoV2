@@ -105,13 +105,21 @@ function postUser() {
 	function newUserAdded(result, status) {
 		clearTextBoxes();
 		$('<div class="alert alert-success"><strong>Success!</strong> User was added.</div>')
-			.insertBefore('#divAllUsers').hide().fadeIn("slow").delay(3000).fadeOut("slow");
+			.insertBefore('#divAllUsers')
+			.hide()
+			.fadeIn("slow")
+			.delay(3000)
+			.fadeOut("slow");
 		loadAllUsers()
 	}
 
 	function newUserFailed(result, status) {
 		$('<div class="alert alert-danger"><strong>FAILED!</strong> ' + result["responseText"] + '</div>')
-			.insertBefore('#divAllUsers').hide().fadeIn("slow").delay(3000).fadeOut("slow");
+			.insertBefore('#divAllUsers')
+			.hide()
+			.fadeIn("slow")
+			.delay(3000)
+			.fadeOut("slow");
 	}
 }
 

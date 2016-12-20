@@ -8,7 +8,9 @@ var bodyParser = require('body-parser');
 // New Code
 var mongo = require('mongodb');
 var monk = require('monk');
-var mongoURL = 'mongodb://bill:652IcDFOy@ds129038.mlab.com:29038/billnodetest1'
+var mongoURL = process.env.mongoURL || "Could not read environment";
+console.log(mongoURL);
+//var mongoURL = 'mongodb://bill:652IcDFOy@ds129038.mlab.com:29038/billnodetest1'
 var db = monk(mongoURL)
 
 var login = require('./routes/login');

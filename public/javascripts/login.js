@@ -39,9 +39,6 @@ function attemptLogin() {
 		window.location.href = url + "/users";
 	};
 
-
-redirect('http://www.example.com', 'post');
-
 	function loginFailed(result) {
 		$('#divErrors').html(result['responseText']);
 		$('#divLoading').hide()

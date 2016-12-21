@@ -2,6 +2,7 @@ $(document).ready(function() {
 	//Setup AJAX?
 	url = window.location.origin
 	$('#btnLogin').click(attemptLogin);
+	$('#btnNewUser').click(attemptCreateNew);
 	resetPage();
 });
 
@@ -15,6 +16,7 @@ function resetPage() {
 function clearTextBoxes() {
 	$('#txtEmail').val('bill.neely.tx@gmail.com');
 	$('#txtPassword').val('password');
+	$('#txtUserName').val('Bill Neely');
 };
 
 function attemptLogin() {
@@ -40,6 +42,37 @@ function attemptLogin() {
 	};
 
 	function loginFailed(result) {
+		$('#divErrors').html(result['responseText']);
+		$('#divLoading').hide()
+	};
+
+};
+
+function attemptCreateNew() {
+	$('#divLoading').show()
+	email = $('#txtEmail').val();
+	password = $('#txtPassword').val();
+	name = $('#txtUserName').val();
+	$.ajax({
+		url: url + '/api/credential',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			'newUserEmail' : email,
+			'newPassword' : password,
+			'newUserName' : name
+		},
+		success: createSuccess,
+		error: createFailed
+	});
+
+	function createSuccess(result) {
+		var token = result['token'];
+		document.cookie = "authToken=" + token;
+		window.location.href = url + "/users";
+	};
+
+	function createFailed(result) {
 		$('#divErrors').html(result['responseText']);
 		$('#divLoading').hide()
 	};

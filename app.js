@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var mongo = require('mongodb');
 var monk = require('monk');
 var mongoURL = process.env.mongoURL || "Could not read environment";
-console.log(mongoURL);
+// Must start node in dev by putting the mlab connection string in process.env.mongoURL
 //var mongoURL = 'mongodb://bill:652IcDFOy@ds129038.mlab.com:29038/billnodetest1'
 var db = monk(mongoURL)
 

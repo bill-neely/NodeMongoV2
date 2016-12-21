@@ -124,7 +124,6 @@ function postUser() {
 }
 
 function deleteUser(userID) {
-	console.log(userID);
 	$.ajax({
 		url: url + '/api/user',
 		type: 'DELETE',

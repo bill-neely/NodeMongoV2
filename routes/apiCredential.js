@@ -9,7 +9,6 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-	console.log("credential post");
 	validateNewUser(req, res);
 });
 
@@ -35,8 +34,6 @@ function verifyLogin(req, res) {
 					else {
 						if (results.length == 1) {
 							var hash = results[0].password;
-							console.log('userPassword = ' + userPassword);		
-							console.log('hash = ' + hash);		
 							bcrypt.compare(userPassword, hash, function(err, result) {
     							if (result == true) {
     								sendNewToken(req, res, userID);
@@ -83,8 +80,6 @@ function sendNewToken(req, res, userID) {
 };
 
 function validateNewUser(req, res) {
-	console.log("validateNewUser");
-	console.log(req.body);
 	var newUserEmail = req.body.newUserEmail;
 	var newUserName = req.body.newUserName;
 	var newPassword = req.body.newPassword;
@@ -95,23 +90,16 @@ function validateNewUser(req, res) {
 };
 
 function saveNewUser(req, res, newUserEmail, newUserName, newPassword) {
-	console.log("saveNewUser");
-	console.log("email = " + newUserEmail);
-	console.log("name = " + newUserName);
-	console.log("password = " + newPassword);
 	var db = req.db;
 	var collection = db.get('credentials');
-	console.log("saving credential");
 	collection.insert( { "email": newUserEmail, "name": newUserName }, (err, doc) => {
 		if (err) {
 			// if it failed, return error
 			res.status(500).send(err);
 		}
 		else {
-			console.log("saving credentialsecret");
 			var newUserID = doc["_id"].toString();
 			bcrypt.hash(newPassword, saltRounds, function(err, hash) {
-				console.log("done bcrypt");
 				collection = db.get("credentialsecrets");
 				collection.insert( { "forCredential": newUserID, "password": hash }, (err, doc) => {
 					if (err) {
@@ -119,7 +107,8 @@ function saveNewUser(req, res, newUserEmail, newUserName, newPassword) {
 						res.status(500).send(err);
 					}
 					else {
-						res.status(201).json(req.body);
+						sendNewToken(req, res, newUserID);
+						//res.status(201).json(req.body);
 					}
 				});
 			});
